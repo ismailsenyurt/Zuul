@@ -22,6 +22,9 @@ class Game
 		Room pub = new Room("in the campus pub");
 		Room lab = new Room("in a computing lab");
 		Room office = new Room("in the computing admin office");
+		Room library = new Room("in the library");
+		Room cafeteria = new Room("in the canteen");
+		Room emergencyExit = new Room("in the exit");
 
 		// Initialise room exits
 		outside.AddExit("east", theatre);
@@ -34,11 +37,18 @@ class Game
 
 		lab.AddExit("north", outside);
 		lab.AddExit("east", office);
+		lab.AddExit("west", library);
 
 		office.AddExit("west", lab);
 
+		library.AddExit("south", cafeteria);
+		library.AddExit("east", lab);
+
+		cafeteria.AddExit("north", library);
+		cafeteria.AddExit("south", emergencyExit);
+
 		// Create your Items here
-		// ...
+		//
 		// And add them to the Rooms
 		// ...
 
@@ -82,7 +92,7 @@ class Game
 	{
 		bool wantToQuit = false;
 
-		if(command.IsUnknown())
+		if (command.IsUnknown())
 		{
 			Console.WriteLine("I don't know what you mean...");
 			return wantToQuit; // false
@@ -99,6 +109,9 @@ class Game
 			case "quit":
 				wantToQuit = true;
 				break;
+			case "look":
+				Look();
+				break;
 		}
 
 		return wantToQuit;
@@ -107,7 +120,7 @@ class Game
 	// ######################################
 	// implementations of user commands:
 	// ######################################
-	
+
 	// Print out some help information.
 	// Here we print the mission and a list of the command words.
 	private void PrintHelp()
@@ -123,7 +136,7 @@ class Game
 	// room, otherwise print an error message.
 	private void GoRoom(Command command)
 	{
-		if(!command.HasSecondWord())
+		if (!command.HasSecondWord())
 		{
 			// if there is no second word, we don't know where to go...
 			Console.WriteLine("Go where?");
@@ -136,11 +149,17 @@ class Game
 		Room nextRoom = currentRoom.GetExit(direction);
 		if (nextRoom == null)
 		{
-			Console.WriteLine("There is no door to "+direction+"!");
+			Console.WriteLine("There is no door to " + direction + "!");
 			return;
 		}
 
 		currentRoom = nextRoom;
 		Console.WriteLine(currentRoom.GetLongDescription());
 	}
+	private void Look()
+	{
+		Console.WriteLine(currentRoom.GetLongDescription());
+	}
+
+
 }
