@@ -13,18 +13,13 @@ class Room
 		get { return chest; }
 	}
 
-	public Room()
-	{
-		// a Room can handle a big Inventory. 
-		chest = new Inventory(999999);
-	}
-
 	// Create a room described "description". Initially, it has no exits.
 	// "description" is something like "in a kitchen" or "in a court yard".
 	public Room(string desc)
 	{
 		description = desc;
 		exits = new Dictionary<string, Room>();
+		chest = new Inventory(999999);
 	}
 
 	// Define an exit for this room.

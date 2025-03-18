@@ -53,7 +53,7 @@ class Game
 		Item baseballBat = new Item(4, "regular baseball bat");
 		Item bandage = new Item(2, "basic heal item");
 		// And add them to the Rooms
-		// ...
+		pub.Chest.Put("knife", knife);
 		// Start game outside
 		player.CurrentRoom = outside;
 	}
@@ -114,7 +114,12 @@ class Game
 			case "look":
 				Look();
 				break;
-			// case "status":
+			case "status":
+				Status();
+				break;
+			case "take":
+				Take(command);
+				break;
 		}
 
 		return wantToQuit;
@@ -162,11 +167,51 @@ class Game
 	private void Look()
 	{
 		Console.WriteLine(player.CurrentRoom.GetLongDescription());
+		if (player.CurrentRoom.Chest.TotalWeight() == 0)
+		{
+			System.Console.WriteLine("There is nothing to be found.");
+		}
+		else
+		{
+			player.CurrentRoom.Chest.ShowItems();
+		}
 	}
 
-	// private void status()
-	// {
-	// 	Console.WriteLine();
-	// }
+	private void Status()
+	{
+		Console.WriteLine($"Yout health is: {player.GetHealth()}/100");
+		Console.WriteLine($"Capacity: {player.Backpack.TotalWeight()}");
+		Console.WriteLine($"Inventory: {player.Backpack.GetItems()}");
+	}
 
+	private void Take(Command command)
+	{
+		if (!command.HasSecondWord())
+		{
+			System.Console.WriteLine("Take what?");
+		}
+
+		string itemName = command.SecondWord;
+		bool success = player.TakeFromChest(itemName);
+
+		if (success)
+		{
+			System.Console.WriteLine(itemName + " is added in your backpack.");
+		}
+	}
+
+	private void Drop(Command command)
+	{
+		if (!command.HasSecondWord())
+		{
+			System.Console.WriteLine("Drop what?");
+		}
+
+		string itemName = command.SecondWord;
+		bool success = player.DropToChest(itemName);
+		if (success)
+		{
+			System.Console.WriteLine(itemName + " is deleted from your backpack.");
+		}
+	}
 }

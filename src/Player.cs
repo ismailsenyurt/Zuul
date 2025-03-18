@@ -17,6 +17,11 @@ class Player
         backpack = new Inventory(10);
     }
 
+    public Inventory Backpack
+    {
+        get { return backpack; }
+    }
+
     // methods
     public void Damage(int amount)
     {
@@ -66,5 +71,15 @@ class Player
         CurrentRoom.Chest.Put(itemName, item);
         System.Console.WriteLine($"You dropped {itemName}");
         return true;
+    }
+
+    public int GetHealth()
+    {
+        return health;
+    }
+
+    public string GetInventory()
+    {
+        return backpack.GetItems();
     }
 }
