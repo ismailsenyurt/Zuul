@@ -50,8 +50,8 @@ class Game
 
 		// Create your Items here
 		Item knife = new Item(2, "basic knife");
-		Item baseballBat = new Item(4, "");
-		Item bandage = new Item(2, "");
+		Item baseballBat = new Item(4, "regular baseball bat");
+		Item bandage = new Item(2, "basic heal item");
 		// And add them to the Rooms
 		// ...
 		// Start game outside
