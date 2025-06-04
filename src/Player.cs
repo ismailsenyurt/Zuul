@@ -14,7 +14,7 @@ class Player
     {
         health = 100;
         CurrentRoom = null;
-        backpack = new Inventory(10);
+        backpack = new Inventory(4);
     }
 
     public Inventory Backpack
@@ -27,10 +27,14 @@ class Player
     {
         health -= amount;
     }
-
     public void Heal(int amount)
     {
         health += amount;
+        if (health >= 100)
+        {
+            health = 100;
+        }
+        Console.WriteLine($"Refreshing. Your health is: {GetHealth()}/100");
     }
 
     public bool IsAlive()
@@ -43,7 +47,7 @@ class Player
         Item item = CurrentRoom.Chest.Get(itemName);
         if (item == null)
         {
-            Console.WriteLine(itemName + "is not in the chest");
+            Console.WriteLine(itemName + " is not in the chest");
             return false;
         }
         if (item.Weight > backpack.FreeWeight())
@@ -64,7 +68,7 @@ class Player
         Item item = backpack.Get(itemName);
         if (item == null)
         {
-            System.Console.WriteLine(itemName + "is not in the backpack");
+            System.Console.WriteLine(itemName + " is not in the backpack");
             return false;
         }
 
@@ -81,5 +85,25 @@ class Player
     public string GetInventory()
     {
         return backpack.GetItems();
+    }
+
+    public string Use(string itemName)
+    {
+        {
+            if (!GetInventory().Contains(itemName))
+            {
+                return $"There is no {itemName} in your backpack.";
+            }
+            else
+            {
+                switch (itemName)
+                {
+                    case "bandage":
+                        Heal(20);
+                        break;
+                }
+                return $"You can't use {itemName}.";
+            }
+        }
     }
 }

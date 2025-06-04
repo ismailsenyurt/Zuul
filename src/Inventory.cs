@@ -3,19 +3,18 @@ using System.Transactions;
 
 class Inventory
 {
-    //fields
+    //maxWeight: the max weight the inventory can hold
     private int maxWeight;
     private Dictionary<string, Item> items;
 
-    //constructor
+    //max weight for inventory
     public Inventory(int maxWeight)
     {
         this.maxWeight = maxWeight;
-        this.items = new Dictionary<string, Item>();
     }
 
 
-    //methods
+    //methods, add an item if there is enough free weight
     public bool Put(string itemName, Item item)
     {
         if (item.Weight > FreeWeight())
@@ -26,6 +25,8 @@ class Inventory
         items.Add(itemName, item);
         return true;
     }
+
+    //remove and return an item by name.
     public Item Get(string itemName)
     {
         if (!items.ContainsKey(itemName))
@@ -39,6 +40,7 @@ class Inventory
         return item;
     }
 
+    //calculates and returns the total weight of all items
     public int TotalWeight()
     {
         int total = 0;
@@ -49,11 +51,13 @@ class Inventory
         return total;
     }
 
+    //returns how much more weight can be added
     public int FreeWeight()
     {
         return maxWeight - TotalWeight();
     }
 
+    //print the names of all item names to console
     public void ShowItems()
     {
         System.Console.WriteLine($"Items:");

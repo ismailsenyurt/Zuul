@@ -24,7 +24,7 @@ class Game
 		Room lab = new Room("in a computing lab");
 		Room office = new Room("in the computing admin office");
 		Room library = new Room("in the library");
-		Room cafeteria = new Room("in the canteen");
+		Room cafeteria = new Room("in the cafeteria");
 		Room emergencyExit = new Room("in the exit");
 
 		// Initialise room exits
@@ -54,6 +54,8 @@ class Game
 		Item bandage = new Item(2, "basic heal item");
 		// And add them to the Rooms
 		pub.Chest.Put("knife", knife);
+		office.Chest.Put("baseballBat", baseballBat);
+		lab.Chest.Put("bandage", bandage);
 		// Start game outside
 		player.CurrentRoom = outside;
 	}
@@ -63,8 +65,7 @@ class Game
 	{
 		PrintWelcome();
 
-		// Enter the main command loop. Here we repeatedly read commands and
-		// execute them until the player wants to quit.
+		
 		bool finished = false;
 		while (!finished)
 		{
@@ -120,6 +121,12 @@ class Game
 			case "take":
 				Take(command);
 				break;
+			case "drop":
+				Drop(command);
+				break;
+			case "use":
+				player.Use(command.SecondWord);
+				break;
 		}
 
 		return wantToQuit;
@@ -163,6 +170,13 @@ class Game
 
 		player.CurrentRoom = nextRoom;
 		Console.WriteLine(player.CurrentRoom.GetLongDescription());
+		player.Damage(10);
+
+		if (player.CurrentRoom.GetShortDescription() == "in the exit")
+		{
+			Console.WriteLine("You won. Congratulations!");
+			Environment.Exit(0);
+		}
 	}
 	private void Look()
 	{
@@ -180,7 +194,7 @@ class Game
 	private void Status()
 	{
 		Console.WriteLine($"Yout health is: {player.GetHealth()}/100");
-		Console.WriteLine($"Capacity: {player.Backpack.TotalWeight()}");
+		Console.WriteLine($"Capacity: {player.Backpack.TotalWeight()}/4");
 		Console.WriteLine($"Inventory: {player.Backpack.GetItems()}");
 	}
 
@@ -189,6 +203,7 @@ class Game
 		if (!command.HasSecondWord())
 		{
 			System.Console.WriteLine("Take what?");
+			return;
 		}
 
 		string itemName = command.SecondWord;
@@ -205,6 +220,7 @@ class Game
 		if (!command.HasSecondWord())
 		{
 			System.Console.WriteLine("Drop what?");
+			return;
 		}
 
 		string itemName = command.SecondWord;
