@@ -11,6 +11,7 @@ class Inventory
     public Inventory(int maxWeight)
     {
         this.maxWeight = maxWeight;
+        this.items = new Dictionary<string, Item>();
     }
 
 
