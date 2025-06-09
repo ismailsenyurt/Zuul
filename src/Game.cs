@@ -65,12 +65,14 @@ class Game
 	{
 		PrintWelcome();
 
-		
+		bool alive = true;
+
 		bool finished = false;
 		while (!finished)
 		{
 			Command command = parser.GetCommand();
 			finished = ProcessCommand(command);
+			alive = player.IsAlive();
 		}
 		Console.WriteLine("Thank you for playing.");
 		Console.WriteLine("Press [Enter] to continue.");
